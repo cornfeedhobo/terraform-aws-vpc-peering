@@ -33,3 +33,13 @@ module "vpc-peering" {
 | requester-vpc_cidr_block | The VPC CIDR block of the 'requester' VPC | string | - | yes |
 | requester-vpc_id | The VPC ID of the 'requester' VPC | string | - | yes |
 | tags | Tags to attach to the peering resources | map | `<map>` | no |
+
+
+## License
+
+[MIT](LICENSE)
+
+
+## Is it any good?
+
+[Yes](http://news.ycombinator.com/item?id=3067434)
