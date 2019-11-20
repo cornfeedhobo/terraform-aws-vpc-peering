@@ -7,6 +7,7 @@ provider "aws" {
 }
 
 variable "enabled" {
+  type        = bool
   default     = true
   description = "Toggle the creation and destruction of all resources in this module"
 }
@@ -67,7 +68,7 @@ variable "accepter-route_table_ids" {
 }
 
 variable "accepter-allow_remote_vpc_dns_resolution" {
+  type        = bool
   default     = false
   description = "Toggle the allowance of DNS resolution through the 'requester'"
 }
-
