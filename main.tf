@@ -56,7 +56,7 @@ resource "aws_vpc_peering_connection_options" "requester" {
 resource "aws_vpc_peering_connection_options" "accepter" {
   provider = aws.accepter
 
-  count = var.enabled == true ? 1 : 0
+  count = var.enabled ? 1 : 0
 
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.accepter[0].id
 
