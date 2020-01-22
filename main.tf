@@ -7,12 +7,7 @@ resource "aws_vpc_peering_connection" "requester" {
 
   count = var.enabled ? 1 : 0
 
-  tags = merge(
-    local.tags,
-    {
-      "Side" = "Requester"
-    },
-  )
+  tags = local.tags
 
   vpc_id        = var.requester-vpc_id
   peer_vpc_id   = var.accepter-vpc_id
@@ -26,12 +21,7 @@ resource "aws_vpc_peering_connection_accepter" "accepter" {
 
   count = var.enabled ? 1 : 0
 
-  tags = merge(
-    local.tags,
-    {
-      "Side" = "Accepter"
-    },
-  )
+  tags = local.tags
 
   vpc_peering_connection_id = aws_vpc_peering_connection.requester[0].id
   auto_accept               = true
