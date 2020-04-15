@@ -57,19 +57,19 @@ resource "aws_vpc_peering_connection_options" "accepter" {
 resource "aws_route" "requester" {
   provider = aws.requester
 
-  count = var.enabled ? length(var.requester-route_table_ids) : 0
+  count = var.enabled ? length(local.requester_cidr_blocks_route_table_ids) : 0
 
-  route_table_id            = var.requester-route_table_ids[count.index]
-  destination_cidr_block    = var.accepter-vpc_cidr_block
+  route_table_id            = local.requester_cidr_blocks_route_table_ids[count.index].route_table_id
+  destination_cidr_block    = local.requester_cidr_blocks_route_table_ids[count.index].cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.requester[0].id
 }
 
 resource "aws_route" "accepter" {
   provider = aws.accepter
 
-  count = var.enabled ? length(var.accepter-route_table_ids) : 0
+  count = var.enabled ? length(local.accepter_cidr_blocks_route_table_ids) : 0
 
-  route_table_id            = var.accepter-route_table_ids[count.index]
-  destination_cidr_block    = var.requester-vpc_cidr_block
+  route_table_id            = local.accepter_cidr_blocks_route_table_ids[count.index].route_table_id
+  destination_cidr_block    = local.accepter_cidr_blocks_route_table_ids[count.index].cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.requester[0].id
 }

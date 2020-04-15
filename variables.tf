@@ -25,6 +25,36 @@ locals {
       "Terraform" = "tf_aws_vpc_cross_account_peering"
     },
   )
+
+  # Create a list of map to support multiple CIDR blocks in accepter VPC
+  requester_cidr_blocks_route_table_ids = [
+    for cidr_block_route_table_id in
+      flatten(
+        [
+          for cidr_block in var.accepter-vpc_cidr_blocks: [
+            for route_table_id in var.requester-route_table_ids: {
+              route_table_id = route_table_id
+              cidr_block = cidr_block,
+            }
+          ]
+        ]
+    ): cidr_block_route_table_id
+  ]
+
+  # Create a list of map to support multiple CIDR blocks in requester VPC
+  accepter_cidr_blocks_route_table_ids = [
+    for cidr_block_route_table_id in
+      flatten(
+        [
+          for cidr_block in var.requester-vpc_cidr_blocks: [
+            for route_table_id in var.accepter-route_table_ids: {
+              route_table_id = route_table_id
+              cidr_block = cidr_block,
+            }
+          ]
+        ]
+    ): cidr_block_route_table_id
+  ]
 }
 
 variable "requester-vpc_id" {
@@ -32,8 +62,8 @@ variable "requester-vpc_id" {
   description = "The VPC ID of the 'requester' VPC"
 }
 
-variable "requester-vpc_cidr_block" {
-  type        = string
+variable "requester-vpc_cidr_blocks" {
+  type        = list(string)
   description = "The VPC CIDR block of the 'requester' VPC"
 }
 
@@ -57,8 +87,8 @@ variable "accepter-vpc_id" {
   description = "The VPC ID of the 'accepter' VPC"
 }
 
-variable "accepter-vpc_cidr_block" {
-  type        = string
+variable "accepter-vpc_cidr_blocks" {
+  type        = list(string)
   description = "The VPC CIDR block of the 'accepter' VPC"
 }
 
